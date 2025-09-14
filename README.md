@@ -26,6 +26,19 @@ The dataset consists of information about user submissions for an online learnin
 - **Submission Timestamp**
 - **Username**
 
+## Create Table:
+
+```sql
+CREATE TABLE USER_SUBMISSIONS (
+ID SERIAL PRIMARY KEY,
+USER_ID BIGINT,
+QUESTION_ID INT,
+POINTS INT,
+SUBMITTED_AT TIMESTAMP WITH TIME ZONE,
+USERNAME VARCHAR(50)
+);
+```
+
 This data allows you to analyze user performance in terms of correct and incorrect submissions, total points earned, and daily/weekly activity.
 
 ## SQL Problems and Questions
@@ -59,20 +72,7 @@ Here are the SQL problems that you will solve as part of this project:
 - **Conditional Aggregation**: Using `CASE WHEN` to handle positive and negative submissions.
 - **Ranking**: Using `DENSE_RANK()` to rank users based on their performance.
 - **Group By**: Aggregating results by groups (e.g., by user, by day, by week).
-
-## Create Table
-
-```sql
-CREATE TABLE USER_SUBMISSIONS (
-ID SERIAL PRIMARY KEY,
-USER_ID BIGINT,
-QUESTION_ID INT,
-POINTS INT,
-SUBMITTED_AT TIMESTAMP WITH TIME ZONE,
-USERNAME VARCHAR(50)
-);
-```
-
+  
 ## SQL Queries Solutions
 
 Below are the solutions for each question in this project:
