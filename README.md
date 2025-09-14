@@ -1,4 +1,4 @@
-# SQL Mentor User Performance Analysis | Project No.10
+# Mini Project
 
 ![SQL Data Analytics](https://github.com/najirh/sql-project-10---sql-mentor-datasets/blob/main/Unknown-5.jpg)
 
@@ -66,80 +66,75 @@ Below are the solutions for each question in this project:
 
 ### Q1: List All Distinct Users and Their Stats
 ```sql
-SELECT 
-    username,
-    COUNT(id) AS total_submissions,
-    SUM(points) AS points_earned
-FROM user_submissions
-GROUP BY username
-ORDER BY total_submissions DESC;
+SELECT USERNAME,
+COUNT(ID) AS TOTAL_SUBMISSIONS,
+SUM(POINTS) AS POINTS_EARNED
+FROM USER_SUBMISSIONS
+GROUP BY USERNAME
+ORDER BY POINTS_EARNED DESC;
 ```
 
 ### Q2: Calculate the Daily Average Points for Each User
 ```sql
-SELECT 
-    TO_CHAR(submitted_at, 'DD-MM') AS day,
-    username,
-    AVG(points) AS daily_avg_points
-FROM user_submissions
-GROUP BY 1, 2
-ORDER BY username;
+SELECT
+TO_CHAR(SUBMITTED_AT, 'MM-DD') AS DAY,
+USERNAME,
+AVG(POINTS) AS DAILY_AVERAGE_POINTS
+FROM USER_SUBMISSIONS
+GROUP BY 1,2
+ORDER BY USERNAME;
 ```
 
 ### Q3: Find the Top 3 Users with the Most Correct Submissions for Each Day
 ```sql
-WITH daily_submissions AS (
-    SELECT 
-        TO_CHAR(submitted_at, 'DD-MM') AS daily,
-        username,
-        SUM(CASE WHEN points > 0 THEN 1 ELSE 0 END) AS correct_submissions
-    FROM user_submissions
-    GROUP BY 1, 2
+WITH DAILY_SUBMISSIONS AS (
+SELECT USERNAME,
+TO_CHAR(SUBMITTED_AT, 'DD-MM') AS DAILY,
+SUM(CASE WHEN POINTS > 0 THEN 1 ELSE 0 END) AS CORRECT_SUBMISSIONS
+FROM USER_SUBMISSIONS
+GROUP BY 1, 2
 ),
-users_rank AS (
-    SELECT 
-        daily,
-        username,
-        correct_submissions,
-        DENSE_RANK() OVER(PARTITION BY daily ORDER BY correct_submissions DESC) AS rank
-    FROM daily_submissions
+USERS_RANK AS (
+SELECT DAILY,
+USERNAME,
+CORRECT_SUBMISSIONS,
+DENSE_RANK() OVER(PARTITION BY DAILY ORDER BY CORRECT_SUBMISSIONS DESC) AS RANK
+FROM DAILY_SUBMISSIONS
 )
-SELECT 
-    daily,
-    username,
-    correct_submissions
-FROM users_rank
-WHERE rank <= 3;
+SELECT
+DAILY,
+USERNAME,
+CORRECT_SUBMISSIONS,
+RANK
+FROM USERS_RANK
+WHERE RANK <=3;
 ```
 
 ### Q4: Find the Top 5 Users with the Highest Number of Incorrect Submissions
 ```sql
-SELECT 
-    username,
-    SUM(CASE WHEN points < 0 THEN 1 ELSE 0 END) AS incorrect_submissions,
-    SUM(CASE WHEN points > 0 THEN 1 ELSE 0 END) AS correct_submissions,
-    SUM(CASE WHEN points < 0 THEN points ELSE 0 END) AS incorrect_submissions_points,
-    SUM(CASE WHEN points > 0 THEN points ELSE 0 END) AS correct_submissions_points_earned,
-    SUM(points) AS points_earned
-FROM user_submissions
+SELECT USERNAME,
+SUM(CASE WHEN POINTS < 0 THEN 1 ELSE 0 END) AS INCORRECT_SUBMISSIONS
+SUM(POINTS) AS POINTS_EARNED
+FROM USER_SUBMISSIONS
 GROUP BY 1
-ORDER BY incorrect_submissions DESC;
+ORDER BY INCORRECT_SUBMISSIONS DESC
+LIMIT 5
 ```
 
 ### Q5: Find the Top 10 Performers for Each Week
 ```sql
-SELECT *  
-FROM (
-    SELECT 
-        EXTRACT(WEEK FROM submitted_at) AS week_no,
-        username,
-        SUM(points) AS total_points_earned,
-        DENSE_RANK() OVER(PARTITION BY EXTRACT(WEEK FROM submitted_at) ORDER BY SUM(points) DESC) AS rank
-    FROM user_submissions
-    GROUP BY 1, 2
-    ORDER BY week_no, total_points_earned DESC
+SELECT * FROM (
+SELECT
+EXTRACT(WEEK FROM SUBMITTED_AT) AS WEEK_NUMBER,
+USERNAME,
+SUM(POINTS) AS TOTAL_POINTS_EARNED,
+DENSE_RANK() OVER(PARTITION BY EXTRACT(WEEK FROM SUBMITTED_AT) ORDER BY SUM(POINTS) DESC) AS RANK
+FROM USER_SUBMISSIONS
+GROUP BY 1, 2
+ORDER BY
+WEEK_NUMBER, TOTAL_POINTS_EARNED DESC
 )
-WHERE rank <= 10;
+WHERE RANK <= 10;
 ```
 
 ## Conclusion
