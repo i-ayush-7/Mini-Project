@@ -1,6 +1,6 @@
 # Mini Project
 
-![SQL Data Analytics](https://github.com/najirh/sql-project-10---sql-mentor-datasets/blob/main/Unknown-5.jpg)
+![SQL Data Analytics](https://github.com/i-ayush-7/Mini-Project/blob/main/Image.png)
 
 ## Project Overview
 
@@ -59,6 +59,19 @@ Here are the SQL problems that you will solve as part of this project:
 - **Conditional Aggregation**: Using `CASE WHEN` to handle positive and negative submissions.
 - **Ranking**: Using `DENSE_RANK()` to rank users based on their performance.
 - **Group By**: Aggregating results by groups (e.g., by user, by day, by week).
+
+## Create Table
+
+```sql
+CREATE TABLE USER_SUBMISSIONS (
+ID SERIAL PRIMARY KEY,
+USER_ID BIGINT,
+QUESTION_ID INT,
+POINTS INT,
+SUBMITTED_AT TIMESTAMP WITH TIME ZONE,
+USERNAME VARCHAR(50)
+);
+```
 
 ## SQL Queries Solutions
 
